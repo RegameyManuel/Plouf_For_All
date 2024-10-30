@@ -85,11 +85,17 @@ Chaque stagiaire devra :
 2. **Documentation** : La documentation sera de type MarkDown, sera située dans le répertoire personnel et décrira le travail en expliquant les fonctionnalités principales de la ou des pages.
 3. **Contribution à GitHub** : Chaque stagiaire doit contribuer activement via GitHub en respectant les pratiques de branchement et de collaboration.
 
-## **Critères de validation**
+## Critères de validation
 
 1. **Qualité du code** : Code bien structuré, commenté et respectant les bonnes pratiques.
 2. **Intégration et liens** : Pages correctement liées entre elles et fonctionnelles.
 3. **Validation des pull requests** : Contributions testées et validées (pas de messages d'erreur dans la console et un passage au HTMLValidator) avant fusion dans la branche principale.
 4. **Mise en ligne réussie** : Le site complet doit être en ligne et opérationnel sur un hébergeur professionnel (Infomaniak).
-5. **Pérennité du projet** : Mise en place d'un automate pour une intégration continue depuis GitHub.
+5. **Accessibilité** : Les pages doivent respecter des critères de base en accessibilité :
+    - Contraste suffisant entre le texte et le fond.
+    - Images avec textes alternatifs (`alt`).
+    - Utilisation de balises sémantiques (comme `<header>`, `<main>`, `<footer>`).
+    - Conception responsive et navigation adaptée aux utilisateurs de lecteurs d'écran.
+6. **Pérennité du projet** : Mise en place d'un automate pour une intégration continue depuis GitHub.
+
 
