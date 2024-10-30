@@ -20,6 +20,7 @@ Ce projet a pour but de vous permettre de participer à la création d'un site w
 - **PHP (via PHP.js)**
 - **TypeScript (via TypeScript Compiler)**
 
+# Notez que nous resterons dans un fonctionnement statique, donc aucun serveur ne sera déployé !!! #
 
 ## **Organisation du projet**
 
