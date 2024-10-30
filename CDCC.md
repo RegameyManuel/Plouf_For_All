@@ -12,7 +12,18 @@ Ce projet a pour but de vous permettre de participer à la création d'un site w
 - **CSS3**
   - Utilisation de frameworks CSS autorisée (ex : Bootstrap, Bulma, etc.)
 - **JavaScript (vanilla)**
-  - Utilisation de librairies JavaScript autorisée (ex : jQuery, GSAP, etc.)
+  - Utilisation de librairies JavaScript autorisée (ex : jQuery, GSAP, Three.js, Paper.js etc.)
+
+## **Pratiques à éviter**
+
+- **Copier sans comprendre**
+- **Ignorer la documentation**
+- **Négliger la gestion des erreurs**
+- **Apprendre plusieurs langages à la fois**
+- **Ignorer la notion d'algorithme**
+- **Coder sans planification**
+- **Éviter de demander de l’aide ... d'autres humains**
+
 
 ## **Technologies intégrables au JavaScript acceptées**
 
