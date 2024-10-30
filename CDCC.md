@@ -12,6 +12,15 @@ Ce projet a pour but de vous permettre de participer à la création d'un site w
 - **JavaScript (vanilla)**
   - Utilisation de librairies JavaScript autorisée (ex : jQuery, GSAP, etc.)
 
+## **Technologies intégrables au JavaScript acceptées**
+
+- **WebAssembly (Wasm)**
+- **Python (via Brython ou Pyodide)**
+- **C/C++ (via Emscripten + WebAssembly)**
+- **PHP (via PHP.js)**
+- **TypeScript (via TypeScript Compiler)**
+
+
 ## **Organisation du projet**
 
 ### **Structure du projet sur GitHub**
