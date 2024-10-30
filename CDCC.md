@@ -69,4 +69,5 @@ Chaque stagiaire devra :
 2. **Intégration et liens** : Pages correctement liées entre elles et fonctionnelles.
 3. **Validation des pull requests** : Contributions testées et validées (pas de messages d'erreur dans la console et un passage au HTMLValidator) avant fusion dans la branche principale.
 4. **Mise en ligne réussie** : Le site complet doit être en ligne et opérationnel sur un hébergeur professionnel (Infomaniak).
+5. **Pérennité du projet** : Mise en place d'un automate pour une intégration continue depuis GitHub.
 
