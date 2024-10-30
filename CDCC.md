@@ -1,12 +1,8 @@
-Voici un cahier des charges pour votre projet collaboratif avec vos stagiaires :
-
----
-
-# **Cahier des Charges : Projet Collaboratif Web**
+# **Cahier des Charges Chiant: Projet Collaboratif Web**
 
 ## **Contexte et objectifs**
 
-Ce projet a pour but de permettre à chaque stagiaire en développement web de participer à la création d'un site web collaboratif. Les stagiaires devront créer une ou plusieurs pages web, liées entre elles, en respectant certaines technologies imposées. Le projet doit être collaboratif et encourager le travail en équipe, la gestion de branches sur GitHub, et le respect de bonnes pratiques en développement web.
+Ce projet a pour but de vous permettre de participer à la création d'un site web collaboratif. Vous devrez créer une ou plusieurs pages web, liées entre elles, en respectant certaines technologies imposées. Le projet peut-être collaboratif donc nous encouragerons le travail en équipe, la gestion de branches sur GitHub, et le respect de bonnes pratiques en développement web.
 
 ## **Technologies utilisées**
 
@@ -20,7 +16,7 @@ Ce projet a pour but de permettre à chaque stagiaire en développement web de p
 
 ### **Structure du projet sur GitHub**
 - **Répertoire du projet** : Un dépôt GitHub collaboratif sera créé pour le projet.
-- **Inscription** : Chaque stagiaire fera une demande pour être ajouté en tant que collaborateur du dépôt.
+- **Inscription** : Chaque personne interessée fera une demande pour être ajoutée en tant que collaborateur/collaboratrice du dépôt.
 - **Répertoires personnels** : Chaque stagiaire créera un répertoire à son nom dans la racine du projet. L’intégralité de sa contribution devra être stockée dans ce répertoire.
 - **Branches** : Chaque stagiaire travaillera dans une branche distincte à son nom. La branche principale (`main`) sera alimentée uniquement par des contributions validées.
 
@@ -31,6 +27,8 @@ Ce projet a pour but de permettre à chaque stagiaire en développement web de p
   - Code propre et commenté
   - Pages correctement liées entre elles
   - Respect de la charte graphique du groupe, si applicable
+  - Nous privilégerons dans un premier temps l'intégration de ressources extérieure, afin de se passer de technologies du type NPM
+  - Respect d'autrui, pas d'insultes, pas de trucs méchant, haineux, irrespectueux etc ... on préfère les génies du mal polis et distingués ( Vador n'a jamais été grossier ! )
 
 ## **Démarche collaborative**
 
@@ -41,7 +39,7 @@ Ce projet a pour but de permettre à chaque stagiaire en développement web de p
 ### **Responsabilité des pages**
 Chaque stagiaire devra :
 - Créer une ou plusieurs pages web respectant le thème général du projet.
-- Assurer que ses pages soient fonctionnelles et responsive.
+- Assurer que ses pages soient fonctionnelles et responsive (une gestion du tactile pourrait-être un plus).
 
 ### **Charte graphique**
 - Des groupes peuvent se former autour d'une charte graphique commune, mais il n'y a pas d'obligation stricte sur le choix du design, tant que les pages restent cohérentes entre elles.
@@ -56,23 +54,19 @@ Chaque stagiaire devra :
 ## **Planning**
 
 - **Démarrage** : 31 octobre 2024
-- **Contributions individuelles** : Les stagiaires devront soumettre leurs contributions régulièrement avant la date limite.
 - **Validation des contributions** : Au fur et à mesure que les contributions seront validées, elles seront intégrées dans la branche `main`.
 - **Mise en ligne** : Le projet devra être mis en ligne autour du 30 novembre 2024 sur un hébergeur professionnel (Infomaniak ou équivalent).
 
 ## **Livrables**
 
 1. **Pages Web** : Chaque stagiaire doit livrer une ou plusieurs pages web fonctionnelles.
-2. **Documentation** : Chaque stagiaire devra fournir un fichier `README.md` dans son répertoire personnel, décrivant son travail et expliquant les fonctionnalités principales de ses pages.
+2. **Documentation** : La documentation sera de type MarkDown, sera située dans le répertoire personnel et décrira le travail en expliquant les fonctionnalités principales de la ou des pages.
 3. **Contribution à GitHub** : Chaque stagiaire doit contribuer activement via GitHub en respectant les pratiques de branchement et de collaboration.
 
 ## **Critères de validation**
 
 1. **Qualité du code** : Code bien structuré, commenté et respectant les bonnes pratiques.
 2. **Intégration et liens** : Pages correctement liées entre elles et fonctionnelles.
-3. **Validation des pull requests** : Contributions testées et validées par l’enseignant avant fusion dans la branche principale.
+3. **Validation des pull requests** : Contributions testées et validées (pas de messages d'erreur dans la console et un passage au HTMLValidator) avant fusion dans la branche principale.
 4. **Mise en ligne réussie** : Le site complet doit être en ligne et opérationnel sur un hébergeur professionnel (Infomaniak).
 
----
-
-Cela vous permet de structurer efficacement le projet tout en encourageant la collaboration et le respect des délais. Est-ce que cela convient ?
