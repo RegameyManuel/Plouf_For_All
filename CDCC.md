@@ -66,13 +66,6 @@ Chaque stagiaire devra :
 ### **Charte graphique**
 - Des groupes peuvent se former autour d'une charte graphique commune, mais il n'y a pas d'obligation stricte sur le choix du design, tant que les pages restent cohérentes entre elles.
 
-## **Objectifs de la formation**
-
-- **Collaboration via GitHub** : Apprendre à gérer un projet en équipe avec Git (création de branches, pull requests, gestion de conflits).
-- **HTML/CSS/JS** : Maîtriser les bases de la création de pages web statiques et interactives.
-- **Frameworks et librairies** : Découvrir et utiliser des outils comme Bootstrap ou des librairies JavaScript pour améliorer les interfaces utilisateurs.
-- **Mise en ligne** : Apprendre à héberger un projet sur un hébergeur professionnel (type Infomaniak).
-
 ## **Planning**
 
 - **Démarrage** : 31 octobre 2024
