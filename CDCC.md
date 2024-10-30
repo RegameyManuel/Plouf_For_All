@@ -14,13 +14,12 @@ Ce projet a pour but de vous permettre de participer à la création d'un site w
 
 ## **Technologies intégrables au JavaScript acceptées**
 
-- **WebAssembly (Wasm)**
+- **WebAssembly (intégration d'un code C, C++, Rust, et Go via un fichier Wasm)**
 - **Python (via Brython ou Pyodide)**
-- **C/C++ (via Emscripten + WebAssembly)**
 - **PHP (via PHP.js)**
 - **TypeScript (via TypeScript Compiler)**
 
-# Notez que nous resterons dans un fonctionnement statique, donc aucun serveur ne sera déployé !!! #
+*Notez que nous resterons dans un fonctionnement statique, donc aucun serveur ne sera déployé !!!*
 
 ## **Organisation du projet**
 
