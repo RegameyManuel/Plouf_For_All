@@ -39,3 +39,14 @@ function calculateResult() {
   document.getElementById("result2").textContent = y;
   document.getElementById("result3").textContent = z;
 }
+
+function openModal(imageElement) {
+  const modal = document.getElementById("imageModal");
+  const modalImg = document.getElementById("modalImage");
+  modalImg.src = imageElement.src;
+  modal.classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("imageModal").classList.add("hidden");
+}
