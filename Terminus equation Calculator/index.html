@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="shortcut icon"
+      href="assets/images/BlackOps6_Keyart_BO6.webp"
+      type="image/x-icon"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/styles/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Terminus : Calculateur</title>
+  </head>
+  <body class="bg-gray-950 text-gray-200 font-sans">
+    <header class="flex flex-col items-center mt-8 mb-6 text-center">
+      <h1
+        class="text-4xl font-bold text-indigo-400 underline decoration-indigo-500"
+      >
+        Terminus : Calculateur d'Équations
+      </h1>
+      <p class="text-xl mt-4 max-w-md leading-relaxed">
+        Ce site est conçu pour vous aider à réaliser l'arme de Terminus : le
+        résonnateur multiphase.
+      </p>
+    </header>
+
+    <section class="flex flex-col items-center">
+      <div
+        class="flex flex-wrap justify-center gap-4 p-6 bg-gray-800 shadow-lg rounded-lg max-w-2xl"
+      >
+        <div
+          id="result1"
+          class="text-4xl p-6 bg-indigo-600 text-white rounded-xl shadow-lg transform scale-110 transition-transform duration-300 hover:scale-115 hover:shadow-xl"
+        >
+          -
+        </div>
+        <div
+          id="result2"
+          class="text-4xl p-6 bg-indigo-600 text-white rounded-xl shadow-lg transform scale-110 transition-transform duration-300 hover:scale-115 hover:shadow-xl"
+        >
+          -
+        </div>
+        <div
+          id="result3"
+          class="text-4xl p-6 bg-indigo-600 text-white rounded-xl shadow-lg transform scale-110 transition-transform duration-300 hover:scale-115 hover:shadow-xl"
+        >
+          -
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <h4 class="text-3xl font-bold text-indigo-400 text-center">X</h4>
+      <div
+        id="x-variables"
+        class="flex flex-wrap justify-center gap-4 flex-grow"
+      >
+        <div class="img-value cursor-pointer" onclick="numberValue('x', 0)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-01.jpg"
+            alt="Value 0"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('x', 10)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-02.jpg"
+            alt="Value 10"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('x', 11)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-03.jpg"
+            alt="Value 11"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('x', 20)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-04.jpg"
+            alt="Value 20"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('x', 21)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-05.jpg"
+            alt="Value 21"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('x', 22)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-06.jpg"
+            alt="Value 22"
+          />
+        </div>
+      </div>
+
+      <h4 class="text-3xl font-bold text-indigo-400 text-center">Y</h4>
+      <div
+        id="y-variables"
+        class="flex flex-wrap justify-center gap-4 flex-grow"
+      >
+        <div class="img-value cursor-pointer" onclick="numberValue('y', 0)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-01.jpg"
+            alt="Value 0"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('y', 10)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-02.jpg"
+            alt="Value 10"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('y', 11)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-03.jpg"
+            alt="Value 11"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('y', 20)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-04.jpg"
+            alt="Value 20"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('y', 21)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-05.jpg"
+            alt="Value 21"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('y', 22)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-06.jpg"
+            alt="Value 22"
+          />
+        </div>
+      </div>
+      <h4 class="text-3xl font-bold text-indigo-400 text-center">Z</h4>
+      <div
+        id="z-variables"
+        class="flex flex-wrap justify-center gap-4 flex-grow"
+      >
+        <div class="img-value cursor-pointer" onclick="numberValue('z', 0)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-01.jpg"
+            alt="Value 0"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('z', 10)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-02.jpg"
+            alt="Value 10"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('z', 11)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-03.jpg"
+            alt="Value 11"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('z', 20)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-04.jpg"
+            alt="Value 20"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('z', 21)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-05.jpg"
+            alt="Value 21"
+          />
+        </div>
+        <div class="img-value cursor-pointer" onclick="numberValue('z', 22)">
+          <img
+            class="w-32 rounded-3xl"
+            src="assets/images/symbols-06.jpg"
+            alt="Value 22"
+          />
+        </div>
+      </div>
+    </main>
+
+    <footer class="mt-12 py-6 bg-gray-800 text-center text-white">
+      <h5 class="text-sm font-light">
+        Crée par <span class="font-semibold">Logan | Ldrekoh Coders</span>
+      </h5>
+    </footer>
+
+    <script src="assets/app.js" defer></script>
+  </body>
+</html>
