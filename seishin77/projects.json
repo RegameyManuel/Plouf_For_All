@@ -1,0 +1,14 @@
+var projects = [
+  {
+    "codename": "gpg", "ext":"jpg", "date":"2024-11-07",
+    "translations": {"en":"GPG : Example", "fr":"GPG : Exemple"}
+  },
+  {
+    "codename": "realm", "ext":"png", "date":"2024-11-07",
+    "translations": {"en":"The realm : Goblin chess", "fr":"Le royaume : Jeu d'échecs gobelin"}
+  },
+  {
+    "codename": "curved_relations", "ext":"png", "date":"2024-11-08",
+    "translations": {"en":"D3.js : Curved relations", "fr":"D3.js : schéma relationnel"}
+  },
+];
