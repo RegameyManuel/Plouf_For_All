@@ -26,3 +26,5 @@ code{
   background-color: white;
   padding: 1rem;
 }
+
+img{ width:unset; }
