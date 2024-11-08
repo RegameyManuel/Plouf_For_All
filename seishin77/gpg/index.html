@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="../../assets/style/w3.css">
+  <link rel="stylesheet" href="../../assets/style/style.css">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <title>Seishin's homepage</title>
+</head>
+<body class="w3-theme w3-container w3-display-container">
+  <div class="w3-display-topright w3-padding w3-theme-d3 w3-border">
+    <img class="flag" onclick="changeLanguage('en');" src="../../assets/img/flags/en.svg" alt="english">
+    <img class="flag w3-hide" onclick="changeLanguage('es');" src="../../assets/img/flags/es.svg" alt="spanish">
+    <img class="flag" onclick="changeLanguage('fr');" src="../../assets/img/flags/fr.svg" alt="french">
+  </div>
+  <h1>GNUPG &amp; PHP</h1>
+  <a href="../index.html" class="w3-button w3-theme-d3">
+    <span lang="fr">Retour</span>
+    <span lang="en">Go back</span>
+    <span lang="es">Volver<!-- Verify translation --></span>
+  </a>
+<pre><code style="color: #000000"><span style="color: #0000BB">&lt;?php
+</span><span style="color: #FF8000">//
+//
+// Some gpg docs
+// https://www.gnupg.org/gph/fr/manual.html#INTRO
+// https://maslosoft.com/blog/2017/09/12/using-gpg-with-php-on-server
+//
+//</span>
+
+<span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'SIGNKEY'</span><span style="color: #007700">,    </span><span style="color: #DD0000">"&lt;YOUR_SIGNKEY&gt;"</span><span style="color: #007700">);
+</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'ENCRYPTKEY'</span><span style="color: #007700">, </span><span style="color: #DD0000">"&lt;YOUR_ENCRYPTKEY&gt;"</span><span style="color: #007700">);
+</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'DECRYPTKEY'</span><span style="color: #007700">, </span><span style="color: #DD0000">"&lt;YOUR_DECRYPTKEY&gt;"</span><span style="color: #007700">);
+</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'PASSPHRASE'</span><span style="color: #007700">, </span><span style="color: #DD0000">"&lt;YOUR_PASSPHRASE&gt;"</span><span style="color: #007700">);
+</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'GNUPGHOME'</span><span style="color: #007700">,  </span><span style="color: #DD0000">"&lt;YOUR_GPG_DIR&gt;"</span><span style="color: #007700">);
+
+if(</span><span style="color: #0000BB">getenv</span><span style="color: #007700">(</span><span style="color: #DD0000">'GNUPGHOME'</span><span style="color: #007700">) === </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">putenv</span><span style="color: #007700">(</span><span style="color: #DD0000">'GNUPGHOME=' </span><span style="color: #007700">. </span><span style="color: #0000BB">GNUPGHOME</span><span style="color: #007700">);
+
+</span><span style="color: #0000BB">$text </span><span style="color: #007700">= </span><span style="color: #DD0000">"just a test\n"</span><span style="color: #007700">;
+</span><span style="color: #0000BB">$text2 </span><span style="color: #007700">= </span><span style="color: #DD0000">''</span><span style="color: #007700">;
+
+echo </span><span style="color: #DD0000">'Procedural version'</span><span style="color: #007700">, </span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;
+
+</span><span style="color: #FF8000">// gnupg initialization
+</span><span style="color: #0000BB">$res </span><span style="color: #007700">= </span><span style="color: #0000BB">gnupg_init</span><span style="color: #007700">();
+if(
+  !</span><span style="color: #0000BB">defined</span><span style="color: #007700">(</span><span style="color: #DD0000">'SIGNKEY'</span><span style="color: #007700">) || !</span><span style="color: #0000BB">defined</span><span style="color: #007700">(</span><span style="color: #DD0000">'ENCRYPTKEY'</span><span style="color: #007700">) || !</span><span style="color: #0000BB">defined</span><span style="color: #007700">(</span><span style="color: #DD0000">'DECRYPTKEY'</span><span style="color: #007700">) || !</span><span style="color: #0000BB">defined</span><span style="color: #007700">(</span><span style="color: #DD0000">'PASSPHRASE'</span><span style="color: #007700">) ||
+  </span><span style="color: #0000BB">trim</span><span style="color: #007700">(</span><span style="color: #0000BB">SIGNKEY</span><span style="color: #007700">) == </span><span style="color: #DD0000">'' </span><span style="color: #007700">|| </span><span style="color: #0000BB">trim</span><span style="color: #007700">(</span><span style="color: #0000BB">ENCRYPTKEY</span><span style="color: #007700">) == </span><span style="color: #DD0000">'' </span><span style="color: #007700">|| </span><span style="color: #0000BB">trim</span><span style="color: #007700">(</span><span style="color: #0000BB">DECRYPTKEY</span><span style="color: #007700">) == </span><span style="color: #DD0000">''
+</span><span style="color: #007700">){
+  echo </span><span style="color: #DD0000">"You must define SIGNKEY / ENCRYPTKEY / DECRYPTKEY / PASSPHRASE constants "</span><span style="color: #007700">,
+       </span><span style="color: #DD0000">"with Fingerprints/Passphrase"</span><span style="color: #007700">, </span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;
+  </span><span style="color: #0000BB">gnupg_subkeys_table</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">);
+  exit(</span><span style="color: #0000BB">0</span><span style="color: #007700">);
+}
+
+</span><span style="color: #FF8000">// Not necessary. Clearsign by default
+</span><span style="color: #007700">if(</span><span style="color: #0000BB">gnupg_setsignmode</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">GNUPG_SIG_MODE_CLEAR</span><span style="color: #007700">) === </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'setsignmode'</span><span style="color: #007700">, </span><span style="color: #0000BB">gnupg_geterror</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">), </span><span style="color: #0000BB">gnupg_geterrorinfo</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">));
+
+</span><span style="color: #FF8000">// Add a key with passphrase to crypt
+</span><span style="color: #007700">if(</span><span style="color: #0000BB">gnupg_addencryptkey</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">ENCRYPTKEY</span><span style="color: #007700">) === </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'addencryptkey'</span><span style="color: #007700">, </span><span style="color: #0000BB">gnupg_geterror</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">), </span><span style="color: #0000BB">gnupg_geterrorinfo</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">));
+
+</span><span style="color: #FF8000">// Add a key with passphrase to decrypt
+</span><span style="color: #007700">if(</span><span style="color: #0000BB">gnupg_adddecryptkey</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">DECRYPTKEY</span><span style="color: #007700">, </span><span style="color: #0000BB">PASSPHRASE</span><span style="color: #007700">) === </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'adddecryptkey'</span><span style="color: #007700">, </span><span style="color: #0000BB">gnupg_geterror</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">), </span><span style="color: #0000BB">gnupg_geterrorinfo</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">));
+
+</span><span style="color: #FF8000">// Add a key with passphrase to sign
+</span><span style="color: #007700">if(</span><span style="color: #0000BB">gnupg_addsignkey</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">SIGNKEY</span><span style="color: #007700">, </span><span style="color: #0000BB">PASSPHRASE</span><span style="color: #007700">) === </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'addsignkey'</span><span style="color: #007700">, </span><span style="color: #0000BB">gnupg_geterror</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">), </span><span style="color: #0000BB">gnupg_geterrorinfo</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">));
+
+</span><span style="color: #FF8000">// Sign the text
+</span><span style="color: #0000BB">$signed </span><span style="color: #007700">= </span><span style="color: #0000BB">gnupg_sign</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">$text</span><span style="color: #007700">);
+if(</span><span style="color: #0000BB">$signed </span><span style="color: #007700">=== </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'sign'</span><span style="color: #007700">, </span><span style="color: #0000BB">gnupg_geterror</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">), </span><span style="color: #0000BB">gnupg_geterrorinfo</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">));
+
+</span><span style="color: #FF8000">// Crypt the signed text
+</span><span style="color: #0000BB">$crypted </span><span style="color: #007700">= </span><span style="color: #0000BB">gnupg_encrypt</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">$signed</span><span style="color: #007700">);
+if(</span><span style="color: #0000BB">$crypted </span><span style="color: #007700">=== </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'crypt'</span><span style="color: #007700">, </span><span style="color: #0000BB">gnupg_geterror</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">), </span><span style="color: #0000BB">gnupg_geterrorinfo</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">));
+
+</span><span style="color: #FF8000">// Decrypt the crypted/signed text
+</span><span style="color: #0000BB">$uncrypted </span><span style="color: #007700">= </span><span style="color: #0000BB">gnupg_decrypt</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">$crypted</span><span style="color: #007700">);
+</span><span style="color: #FF8000">// Verify and retrieve the text
+</span><span style="color: #0000BB">$sign </span><span style="color: #007700">= </span><span style="color: #0000BB">gnupg_verify</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">$uncrypted</span><span style="color: #007700">, </span><span style="color: #0000BB">false</span><span style="color: #007700">, </span><span style="color: #0000BB">$text2</span><span style="color: #007700">);
+if(</span><span style="color: #0000BB">$text </span><span style="color: #007700">!== </span><span style="color: #0000BB">$text2</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'verify'</span><span style="color: #007700">, </span><span style="color: #0000BB">$sign</span><span style="color: #007700">, </span><span style="color: #0000BB">$text</span><span style="color: #007700">, </span><span style="color: #0000BB">$text2</span><span style="color: #007700">);
+else
+  echo </span><span style="color: #DD0000">'Ok'</span><span style="color: #007700">, </span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;
+
+</span><span style="color: #FF8000">// Decrypt, verify and retrieve the text in one call
+</span><span style="color: #0000BB">$sign </span><span style="color: #007700">= </span><span style="color: #0000BB">gnupg_decryptverify</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">gnupg_sign</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">gnupg_encrypt</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #0000BB">$text</span><span style="color: #007700">)), </span><span style="color: #0000BB">$text2</span><span style="color: #007700">);
+if(</span><span style="color: #0000BB">$text </span><span style="color: #007700">!== </span><span style="color: #0000BB">$text2</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'decryptverify'</span><span style="color: #007700">, </span><span style="color: #0000BB">$sign</span><span style="color: #007700">, </span><span style="color: #0000BB">$text</span><span style="color: #007700">, </span><span style="color: #0000BB">$text2</span><span style="color: #007700">);
+else
+  echo </span><span style="color: #DD0000">'Ok'</span><span style="color: #007700">, </span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;
+
+echo </span><span style="color: #DD0000">'Object version'</span><span style="color: #007700">, </span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;
+</span><span style="color: #0000BB">$gpg </span><span style="color: #007700">= new </span><span style="color: #0000BB">gnupg</span><span style="color: #007700">();
+if(</span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setsignmode</span><span style="color: #007700">(</span><span style="color: #0000BB">gnupg</span><span style="color: #007700">::</span><span style="color: #0000BB">SIG_MODE_CLEAR</span><span style="color: #007700">) === </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'obj_setsignmode'</span><span style="color: #007700">, </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterror</span><span style="color: #007700">(), </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterrorinfo</span><span style="color: #007700">());
+
+if(</span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addencryptkey</span><span style="color: #007700">(</span><span style="color: #0000BB">ENCRYPTKEY</span><span style="color: #007700">) === </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'obj_addencryptkey'</span><span style="color: #007700">, </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterror</span><span style="color: #007700">(), </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterrorinfo</span><span style="color: #007700">());
+if(</span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">adddecryptkey</span><span style="color: #007700">(</span><span style="color: #0000BB">DECRYPTKEY</span><span style="color: #007700">, </span><span style="color: #0000BB">PASSPHRASE</span><span style="color: #007700">) === </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'obj_adddecryptkey'</span><span style="color: #007700">, </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterror</span><span style="color: #007700">(), </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterrorinfo</span><span style="color: #007700">());
+if(</span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addsignkey</span><span style="color: #007700">(</span><span style="color: #0000BB">SIGNKEY</span><span style="color: #007700">, </span><span style="color: #0000BB">PASSPHRASE</span><span style="color: #007700">) === </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'obj_addsignkey'</span><span style="color: #007700">, </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterror</span><span style="color: #007700">(), </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterrorinfo</span><span style="color: #007700">());
+
+</span><span style="color: #0000BB">$signed </span><span style="color: #007700">= </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">sign</span><span style="color: #007700">(</span><span style="color: #0000BB">$text</span><span style="color: #007700">);
+if(</span><span style="color: #0000BB">$signed </span><span style="color: #007700">=== </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'obj_sign'</span><span style="color: #007700">, </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterror</span><span style="color: #007700">(), </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterrorinfo</span><span style="color: #007700">());
+
+</span><span style="color: #0000BB">$crypted </span><span style="color: #007700">= </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">encrypt</span><span style="color: #007700">(</span><span style="color: #0000BB">$signed</span><span style="color: #007700">);
+if(</span><span style="color: #0000BB">$crypted </span><span style="color: #007700">=== </span><span style="color: #0000BB">false</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'obj_crypt'</span><span style="color: #007700">, </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterror</span><span style="color: #007700">(), </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">geterrorinfo</span><span style="color: #007700">());
+
+</span><span style="color: #0000BB">$uncrypted </span><span style="color: #007700">= </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">decrypt</span><span style="color: #007700">(</span><span style="color: #0000BB">$crypted</span><span style="color: #007700">);
+</span><span style="color: #0000BB">$sign </span><span style="color: #007700">= </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">verify</span><span style="color: #007700">(</span><span style="color: #0000BB">$uncrypted</span><span style="color: #007700">, </span><span style="color: #0000BB">false</span><span style="color: #007700">, </span><span style="color: #0000BB">$text2</span><span style="color: #007700">);
+if(</span><span style="color: #0000BB">$text </span><span style="color: #007700">!== </span><span style="color: #0000BB">$text2</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'obj_verify'</span><span style="color: #007700">, </span><span style="color: #0000BB">$sign</span><span style="color: #007700">, </span><span style="color: #0000BB">$text</span><span style="color: #007700">, </span><span style="color: #0000BB">$text2</span><span style="color: #007700">);
+else
+  echo </span><span style="color: #DD0000">'Ok'</span><span style="color: #007700">, </span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;
+
+</span><span style="color: #0000BB">$sign </span><span style="color: #007700">= </span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">decryptverify</span><span style="color: #007700">(</span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">sign</span><span style="color: #007700">(</span><span style="color: #0000BB">$gpg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">encrypt</span><span style="color: #007700">(</span><span style="color: #0000BB">$text</span><span style="color: #007700">)), </span><span style="color: #0000BB">$text2</span><span style="color: #007700">);
+if(</span><span style="color: #0000BB">$text </span><span style="color: #007700">!== </span><span style="color: #0000BB">$text2</span><span style="color: #007700">)
+  </span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #DD0000">'obj_decryptverify'</span><span style="color: #007700">, </span><span style="color: #0000BB">$sign</span><span style="color: #007700">, </span><span style="color: #0000BB">$text</span><span style="color: #007700">, </span><span style="color: #0000BB">$text2</span><span style="color: #007700">);
+else
+  echo </span><span style="color: #DD0000">'Ok'</span><span style="color: #007700">, </span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;
+
+function </span><span style="color: #0000BB">gnupg_subkeys_table</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">){
+  </span><span style="color: #0000BB">$keys </span><span style="color: #007700">= </span><span style="color: #0000BB">gnupg_keyinfo</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">, </span><span style="color: #DD0000">''</span><span style="color: #007700">);
+  </span><span style="color: #0000BB">$sepline </span><span style="color: #007700">= </span><span style="color: #0000BB">str_repeat</span><span style="color: #007700">(</span><span style="color: #DD0000">'-'</span><span style="color: #007700">, </span><span style="color: #0000BB">90</span><span style="color: #007700">) . </span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;
+  </span><span style="color: #0000BB">$format </span><span style="color: #007700">= </span><span style="color: #DD0000">'%-18s %-42s %-10s %-8s %-8s' </span><span style="color: #007700">. </span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;
+  echo </span><span style="color: #0000BB">$sepline</span><span style="color: #007700">;
+  </span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #0000BB">$format</span><span style="color: #007700">, </span><span style="color: #DD0000">'Id'</span><span style="color: #007700">, </span><span style="color: #DD0000">'Fingerprint'</span><span style="color: #007700">, </span><span style="color: #DD0000">'Encrypt?'</span><span style="color: #007700">, </span><span style="color: #DD0000">'Sign?'</span><span style="color: #007700">, </span><span style="color: #DD0000">'Auth?'</span><span style="color: #007700">);
+  echo </span><span style="color: #0000BB">$sepline</span><span style="color: #007700">;
+  foreach(</span><span style="color: #0000BB">$keys </span><span style="color: #007700">as </span><span style="color: #0000BB">$key</span><span style="color: #007700">){
+    foreach(</span><span style="color: #0000BB">$key</span><span style="color: #007700">[</span><span style="color: #DD0000">'subkeys'</span><span style="color: #007700">] as </span><span style="color: #0000BB">$k</span><span style="color: #007700">){
+      </span><span style="color: #0000BB">printf</span><span style="color: #007700">(
+        </span><span style="color: #0000BB">$format</span><span style="color: #007700">,
+        </span><span style="color: #0000BB">$k</span><span style="color: #007700">[</span><span style="color: #DD0000">'keyid'</span><span style="color: #007700">],
+        </span><span style="color: #0000BB">$k</span><span style="color: #007700">[</span><span style="color: #DD0000">'fingerprint'</span><span style="color: #007700">],
+        </span><span style="color: #0000BB">var_export</span><span style="color: #007700">(</span><span style="color: #0000BB">$k</span><span style="color: #007700">[</span><span style="color: #DD0000">'can_encrypt'</span><span style="color: #007700">], </span><span style="color: #0000BB">true</span><span style="color: #007700">),
+        </span><span style="color: #0000BB">var_export</span><span style="color: #007700">(</span><span style="color: #0000BB">$k</span><span style="color: #007700">[</span><span style="color: #DD0000">'can_sign'</span><span style="color: #007700">], </span><span style="color: #0000BB">true</span><span style="color: #007700">),
+        </span><span style="color: #0000BB">var_export</span><span style="color: #007700">(</span><span style="color: #0000BB">$k</span><span style="color: #007700">[</span><span style="color: #DD0000">'can_authenticate'</span><span style="color: #007700">], </span><span style="color: #0000BB">true</span><span style="color: #007700">)
+      );
+    }
+    echo </span><span style="color: #0000BB">$sepline</span><span style="color: #007700">;
+  }
+}
+
+</span><span style="color: #0000BB">gnupg_subkeys_table</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">);
+</span></code></pre>
+<a href="../index.html" class="w3-button w3-theme-d3 w3-margin-bottom">
+  <span lang="fr">Retour</span>
+  <span lang="en">Go back</span>
+  <span lang="es">Volver<!-- Verify translation --></span>
+</a>
+  <script type="text/javascript" src="../../assets/script/script.js"></script>
+  <script type="text/javascript" src="../assets/js/script.js"></script>
+</body>
+</html>

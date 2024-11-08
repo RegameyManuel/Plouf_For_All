@@ -1,0 +1,28 @@
+a{
+  text-decoration: none;
+}
+
+#presenter > div.w3-col > a > div.w3-display-container > div{
+  width: 100%;
+}
+
+#presenter > div.w3-col > a > div.w3-display-container, #presenter > div.w3-col > a > div.w3-display-container > img{
+  height: 200px;
+}
+
+#presenter > div.w3-col > a:hover > div.w3-display-container > div.w3-black{
+  background-color: white !important;
+  color: black !important;
+}
+#presenter > div.w3-col > a > div.w3-display-container > div.w3-display-bottomleft > footer,
+#presenter > div.w3-col > a > div.w3-display-container > div.w3-display-topright > span{
+    font-size: 80%;
+}
+.w3-padding-lr{
+  padding: 5px 16px 5px;
+}
+code{
+  display: block;
+  background-color: white;
+  padding: 1rem;
+}

@@ -17,3 +17,18 @@ img {
     width: 100%;
     height: auto;
 }
+
+.flag{
+  width: 16px;
+  display: inline-block;
+  position: relative;
+  top: -2px;
+}
+
+.flag + .flag{
+  margin-left:8px;
+}
+
+.flag:hover{
+  cursor: pointer;
+}

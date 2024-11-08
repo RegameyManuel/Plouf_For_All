@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="../assets/style/w3.css">
+  <link rel="stylesheet" href="../assets/style/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <title>Seishin's homepage</title>
+</head>
+<body class="w3-theme w3-container w3-display-container">
+  <div class="w3-display-topright w3-padding w3-theme-d3 w3-border">
+    <img class="flag" onclick="changeLanguage('en');" src="../assets/img/flags/en.svg" alt="english">
+    <img class="flag w3-hide" onclick="changeLanguage('es');" src="../assets/img/flags/es.svg" alt="spanish">
+    <img class="flag" onclick="changeLanguage('fr');" src="../assets/img/flags/fr.svg" alt="french">
+  </div>
+  <h1 lang="en">Seishin's homepage</h1>
+  <h1 lang="fr">La page de Seishin</h1>
+  <p lang="en" class="w3-justify">This page presents some code to test ideas and/or technologies</p>
+  <p lang="fr" class="w3-justify">
+    Cette page présente quelques essais de code pour tester des idées ou/et des technologies
+  </p>
+
+  <div class="w3-row-padding" id="presenter"></div>
+
+  <script type="text/javascript" src="./projects.json"></script>
+  <script type="text/javascript" src="../assets/script/script.js"></script>
+  <script type="text/javascript" src="assets/js/script.js"></script>
+
+  <template id="project">
+    <div class="w3-col s3 w3-margin-bottom">
+      <a>
+        <div class="w3-display-container w3-theme-d3">
+          <img class="w3-image w3-display-middle"/>
+          <div class="w3-display-topright w3-right-align w3-text-white">
+            <span class="w3-black w3-padding-lr"></span>
+          </div>
+          <div class="w3-display-bottomleft w3-black w3-padding">
+            <footer lang="fr"></footer>
+            <footer lang="en"></footer>
+          </div>
+        </div>
+      </a>
+    </div>
+  </template>
+
+</body>
+</html>
