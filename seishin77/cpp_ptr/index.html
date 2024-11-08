@@ -299,7 +299,59 @@
         iter -- "ERROR" --> f
         style f fill:transparent;stroke:none
     </pre>
+    <pre><code>delete ptr;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        c[" "]:1
+        space:2
+        f[" "]:1
+
+        ptr --> c
+        iter --> f
+        style c fill:transparent;stroke:none
+        style f fill:transparent;stroke:none
+    </pre>
+    <pre><code>delete iter; <span style="color:red;">// ERROR</span></code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        c[" "]:1
+        space:2
+        f[" "]:1
+
+        ptr --> c
+        iter -- "ERROR" --> f
+        style c fill:transparent;stroke:none
+        style f fill:transparent;stroke:none
+    </pre>
+    <pre><code>*ptr = 4; <span style="color:red;">// ERROR</span></code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        c[" "]:1
+        space:2
+        f[" "]:1
+
+        ptr -- "ERROR" --> c
+        iter --> f
+        style c fill:transparent;stroke:none
+        style f fill:transparent;stroke:none
+    </pre>
   </div>
+
   <div class="code w3-theme-l3" id="doubleptr">
     <pre><code>int **ptr2 = new int*[3];</code></pre>
     <pre class="mermaid">
@@ -321,7 +373,7 @@
         style type21 fill:none;stroke:none
         style type22 fill:none;stroke:none
     </pre>
-    <pre><code>int **iter2 = ptr2;
+    <pre><code>iter2 = ptr2;
 for(int i = 0; i < 3; i++){
     // Declare a memory block of 4 integers
     *iter2 = new int[4];
@@ -377,6 +429,81 @@ for(int i = 0; i < 3; i++){
         e2 ----> o2
         style f2 fill:transparent;stroke:none
     </pre>
+
+    <pre><code>iter2 = ptr2;
+for(int i = 0; i < 3; i++){
+    // Declare a memory block of 4 integers
+    delete[] *iter2;
+    iter++;
+}</code></pre>
+    <pre class="mermaid">
+      ---
+      config:
+        layout: elk
+      ---
+      block-beta
+        columns 16
+        ptr2:1
+        space:2
+        iter2:1
+        space:12
+
+        space:16
+
+        c2[" "]:1
+        space:1
+        d2[" "]:1
+        space:1
+        e2[" "]:1
+        space:1
+        f2[" "]:1
+        space:9
+
+        space:16
+
+        g2[" "]:1
+        space:4
+
+        k2[" "]:1
+        space:4
+
+        o2[" "]:1
+        space:4
+
+        ptr2 ----> c2
+        iter2 ----> f2
+        c2 ----> g2
+        d2 ----> k2
+        e2 ----> o2
+        style f2 fill:transparent;stroke:none
+        style g2 fill:transparent;stroke:none
+        style k2 fill:transparent;stroke:none
+        style o2 fill:transparent;stroke:none
+    </pre>
+    <pre><code>delete[] ptr2;</code></pre>
+    <pre class="mermaid">
+      ---
+      config:
+        layout: elk
+      ---
+      block-beta
+        columns 16
+        ptr2:1
+        space:2
+        iter2:1
+        space:12
+
+        space:16
+
+        c2[" "]:1
+        space:5
+        f2[" "]:1
+
+        ptr2 ----> c2
+        iter2 ----> f2
+        style c2 fill:transparent;stroke:none
+        style f2 fill:transparent;stroke:none
+    </pre>
   </div>
   <a href="../index.html" class="w3-button w3-theme-d3 w3-margin-bottom">
     <span lang="fr">Retour</span>
@@ -409,6 +536,7 @@ for(int i = 0; i < 3; i++){
     setTimeout(
       function(){
         openCode('simpleptr');
+        openCode('doubleptr');
       },
       250
     );
