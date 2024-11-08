@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voronoi Diagram with Force Directed Nodes and Delaunay Links</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/d3-voronoi.v1.min.js"></script>
+    <style type="text/css">
+        circle {
+            stroke: #EFEDF5;
+            fill: #EFEDF5;
+            pointer-events: none;
+        }
+        line {
+            pointer-events: none;
+            stroke: #EFEDF5;
+            stroke-width: 1px;
+            opacity: .05;
+        }
+        path{
+            stroke: #EFEDF5;
+            stroke-width: 1px;
+        }
+
+        #notes{
+          border: thin solid black;
+          background-color: #cccccc;
+          padding: 0.5rem;
+          margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+<div id="chart">
+</div>
+
+<div id="infos"></div>
+<div id="notes">
+  Un domaine est la plus petite unité cartographique.<br>
+  Il fait en moyenne un rayon de 2 lieues soit 8km de rayon ou 201km<sup>2</sup>.<br>
+</div>
+<script type="text/javascript">
+
+window.addEventListener('load', function(){
+  force.nodes(vertices).start();
+});
+
+
+var params= new URL(window.location.href).searchParams,
+    randomness = params.get('random') ? true:false,
+    w = (window.innerWidth  - 100 || 1024),
+    h = (window.innerHeight - 100 || 768),
+    radius = 2,
+    links = [],
+    simulate = true,
+    zoomToAdd = true,
+
+/*
+    coloursRGB = [
+      // seas
+      '#0000A8', '#1123B8', '#2246C8', '#326AD8', '#438DE8', '#54B0F8', '#49A3BA',
+      // '#3E967C',
+      // lands
+      '#287C00', '#4E8406', '#738C0D', '#999413', '#BE9C1A', '#E4A420',
+      '#DC9414', '#E3A943', '#EABF72', '#F1D4A1', '#F8EAD0', '#FFFFFF'
+    ];
+*/
+    // seas
+    scoloursRGB = [
+      '#0000A8', '#1123B8', '#2246C8', '#326AD8', '#438DE8', '#54B0F8', '#49A3BA',
+    ];
+    // lands
+/*
+    lcoloursRGB = [
+      '#287C00', '#4E8406', '#738C0D', '#999413', '#BE9C1A', '#E4A420',
+      '#DC9414', '#E3A943', '#EABF72', '#F1D4A1', '#F8EAD0', '#FFFFFF'
+    ];
+*/
+    lcoloursRGB = [
+      '#287C00',
+      '#BE9C1A', '#EABF72',
+      '#FFFFFF'
+    ];
+
+var maxTemp = 128;
+var minAlt = -3000;
+var maxAlt = 6000;
+var maxAdd = maxAlt - minAlt;
+var border = 40,
+    earthRatio = 0.3;
+
+var scolourRangeRGB = d3.range(minAlt, 0, (0 - minAlt) / (scoloursRGB.length - 1));
+seacolors = d3.scale.linear()
+  .domain(scolourRangeRGB)
+  .range(scoloursRGB)
+  .interpolate(d3.interpolateHcl);
+
+var lcolourRangeRGB = d3.range(0, maxAlt, (maxAlt) / (lcoloursRGB.length - 1));
+lcolourRangeRGB.push(maxAlt);
+
+landcolors = d3.scale.linear()
+  .domain(lcolourRangeRGB)
+  .range(lcoloursRGB)
+  .interpolate(d3.interpolateHcl);
+
+var numVertices = Math.floor((w * h) / 125);
+if(randomness){
+  var vertices = d3.range(numVertices).map(function(i) {
+    return {
+      x: Math.round(Math.random() * (1 + w)),
+      y: Math.round(Math.random() * (1 + h)),
+      alt:minAlt,
+      temp:0,
+      biome:undefined,
+      neighbors:[]
+      // INSERT METADATA
+    };
+  });
+}
+else{
+  var vertices = d3.range(numVertices).map(function(i) {
+      angle = radius * (i+10);
+      return {
+        x: angle*Math.cos(angle)+(w/2), y: angle*Math.sin(angle)+(h/2),
+        alt:minAlt,
+        temp:0,
+        biome:undefined,
+        neighbors:[]
+        // INSERT METADATA
+      };
+  });
+}
+
+var prevEventScale = 1;
+var voronoi;
+var vordiag;
+var domains;
+
+var d3_geom_voronoi = d3.geom.voronoi().x(function(d) { return d.x; }).y(function(d) { return d.y; })
+d3.select(window)
+  .on("keydown", function() {
+    // shift
+/*
+    if(d3.event.keyCode == 16) {
+      zoomToAdd = false
+    }
+*/
+    // s
+    if(d3.event.keyCode == 83) {
+      simulate = !simulate
+      if(simulate) {
+        force.start()
+      } else {
+        stableStop();
+      }
+    }
+  });
+
+var svg = d3.select("#chart")
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+var defs = svg.append("defs");
+
+var puzzle_grp = svg.append('g').attr('id', 'puzzleLayer');
+var infos_grp  = svg.append('g').attr('id', 'infosLayer');
+
+
+var infos = d3.select('#infos');
+
+var force = d3.layout.force()
+        .charge(-10)
+        .size([w, h])
+        .on("tick", update);
+
+
+
+// var circle = puzzle_grp.selectAll("circle");
+var path   = puzzle_grp.selectAll("path");
+// var link   = puzzle_grp.selectAll("line");
+var iminpoly = '';
+var imaxpoly = '';
+var min = Number.MAX_VALUE;
+var max = Number.MIN_VALUE;
+var pmaxAlt = Number.MIN_VALUE;
+var ipmaxAlt;
+var debug = true;
+var ldom;
+
+function update(e) {
+  min = Number.MAX_VALUE;
+  max = Number.MIN_VALUE;
+  var imin = -1;
+  var imax = -1;
+  path = path.data(d3_geom_voronoi(vertices))
+
+  path.enter().append("path");
+  path
+    .attr('id', function(d,i){ return 'dom'+i; })
+    .attr("d", function(d) { return "M" + d.map(function(e){ return [e[0].toFixed(2), e[1].toFixed(2)]; }).join("L") + "Z"; })
+    .attr('data-area', function(d){ return d3.geom.polygon(d).area(); })
+    .transition().duration(50).style("fill", function(d, i){
+        var area = d3.geom.polygon(d).area();
+        if(d.filter(function(e){ return e[0] >= border && e[0] <= w-border && e[1]>=border && e[1]<=h-border; }).length > 0){
+          if(area < min){
+            min  = area;
+            imin = i;
+            iminpoly = "M" + d.map(function(e){ return [e[0].toFixed(2), e[1].toFixed(2)]; }).join("L") + "Z";
+          }
+          if(area > max){
+            max  = area;
+            imax = i;
+            imaxpoly = "M" + d.map(function(e){ return [e[0].toFixed(2), e[1].toFixed(2)]; }).join("L") + "Z";
+          }
+        }
+        return seacolors(minAlt);
+    })
+  path.exit().remove();
+
+  var ratio = (max/min).toFixed(2);
+  infos[0][0].innerHTML = 'nb=' + numVertices + ' ' + w + 'x' + h + '<br>' + min.toFixed(2) +
+      ' ' + max.toFixed(2) + ' ratio=' + ratio + '<br>random:' + randomness; //?'true':'false';
+
+  if(ratio < 1.5)
+    simulate = false;
+  if(!simulate)
+    stableStop();
+}
+
+function stableStop(){
+  simulate = false;
+  force.stop();
+/*
+  var pmin = infos_grp.append('path');
+  pmin.style("fill", function(d, i) { return 'red'; })
+    .attr('id', 'minpoly')
+    .attr("d", iminpoly)
+    .transition().duration(150).style("fill", function(d, i) {
+      return '#ff9999';
+    })
+  var pmax = infos_grp.append('path');
+  pmax.style("fill", 'green')
+    .attr('id', 'maxpoly')
+    .attr("d", imaxpoly)
+    .transition().duration(150).style("fill", function(d, i) {
+      return '#99ff99';
+    });
+*/
+  var pborder = infos_grp.append('rect');
+  pborder.style({'stroke':'red', 'fill':'none', 'stroke-width':5, 'stroke-opacity':0.5})
+    .attr('id', 'border')
+    .attr('width', w-2*border)
+    .attr('height', h-2*border)
+    .attr('x', border)
+    .attr('y', border);
+
+
+  // infos[0][0].innerHTML += '<br>';
+  voronoi = d3.voronoi().x(function(d) { return d.x; }).y(function(d) { return d.y; });
+  voronoi.extent([[0,0],[w, h]])
+  vordiag = voronoi(vertices);
+  domains = vordiag.cells;
+
+  for(i in domains){
+    domains[i]['site']['data']['area'] = parseFloat(parseFloat($('#dom' + domains[i]['site']['data']['index']).attr('data-area')).toFixed(2));
+  }
+
+  var links = vordiag.links();
+  for(i in links){
+    var src = links[i]['source']['index'];
+    var dst = links[i]['target']['index'];
+
+    if(domains[src] && domains[dst]){
+      domains[src]['site']['data']['neighbors'].push(dst);
+      domains[dst]['site']['data']['neighbors'].push(src);
+    }
+  }
+
+  generateTectonic();
+  refreshMap(minAlt);
+  tideCycle(250);
+}
+
+function refreshMap(detail){
+  var surf = 0;
+  path.enter().append("path");
+  path
+    .attr('id', function(d,i){ return 'dom'+i; })
+    .attr("d", function(d) { return "M" + d.map(function(e){ return [e[0].toFixed(2), e[1].toFixed(2)]; }).join("L") + "Z"; })
+    .attr('data-area', function(d){ return d3.geom.polygon(d).area(); })
+    .transition()
+    //.duration(50)
+    .style("fill", function(d, i){
+        if(domains[i] && domains[i]['site']['data']['alt'] >= detail){
+          if(domains[i]['site']['data']['alt'] >= detail)
+            surf += d3.geom.polygon(d).area();
+
+          var alt = Math.min(maxAlt, domains[i]['site']['data']['alt'])
+          if(alt < 0)
+            return seacolors(alt);
+          else
+            return landcolors(alt);
+        }
+        else
+          return seacolors(minAlt);
+    }).style('stroke-opacity', 0.1);
+  path.exit().remove();
+
+  return surf;
+}
+
+function generateTectonic(){
+  domains.forEach(
+    function(e){
+      e['site']['data']['alt'] = minAlt;
+    }
+  );
+  var maxStep = 10000;
+  var surf = 0;
+  var surfTarget = Math.round(w * h * earthRatio);
+  var step = 0;
+  var sites = [];
+  var idx;
+
+  while(surf < surfTarget && step < maxStep){
+    if(step % 1000 == 0)
+      console.log(step)
+    var nAlt   = Math.round(Math.random() * maxAdd);
+    var nTemp = Math.round(Math.random() * maxTemp);
+    var x = Math.round(Math.random() * (w + 1 - 4 * border)) + 2 *border;
+    var y = Math.round(Math.random() * (h + 1 - 4 * border)) + 2 *border;
+    idx = vordiag.find(x, y)['index'];
+
+    var oldAlt = domains[idx]['site']['data']['alt'];
+
+    domains[idx]['site']['data']['alt'] += nAlt;
+    domains[idx]['site']['data']['temp'] = Math.round((domains[idx]['site']['data']['temp'] + nTemp) / 2);
+
+    if(domains[idx]['site']['data']['temp'] > 0)
+      sites.push(idx);
+
+    if(oldAlt < 0 && domains[idx]['site']['data']['alt'] >= 0)
+      surf += domains[idx]['site']['data']['area'];
+    if(oldAlt >= 0 && domains[idx]['site']['data']['alt'] < 0)
+      surf -= domains[idx]['site']['data']['area'];
+
+    nsites = [];
+    // console.log(step + ' ' + sites.length);
+    while(sites.length > 0){
+      idx = sites.pop();
+
+      var n = domains[idx]['site']['data']['neighbors'].filter(
+        function(e){
+          return domains[e]['site']['data']['alt'] < domains[idx]['site']['data']['alt'];
+        }
+      ).sort(
+        function(a, b){
+          return domains[a]['site']['data']['alt'] - domains[b]['site']['data']['alt'];
+        }
+      );
+
+      n.forEach(
+        function(e){
+          var deltaAlt = Math.round((domains[idx]['site']['data']['alt'] - domains[e]['site']['data']['alt']) / 2.0);
+
+          oldAlt = domains[idx]['site']['data']['alt'];
+          domains[idx]['site']['data']['alt'] -= deltaAlt;
+          if(oldAlt < 0 && domains[idx]['site']['data']['alt'] >= 0)
+            surf += domains[idx]['site']['data']['area'];
+          if(oldAlt >= 0 && domains[idx]['site']['data']['alt'] < 0)
+            surf -= domains[idx]['site']['data']['area'];
+
+          oldAlt = domains[e]['site']['data']['alt'];
+          domains[e]['site']['data']['alt'] += deltaAlt;
+          if(oldAlt < 0 && domains[e]['site']['data']['alt'] >= 0)
+            surf += domains[e]['site']['data']['area'];
+          if(oldAlt >= 0 && domains[e]['site']['data']['alt'] < 0)
+            surf -= domains[e]['site']['data']['area'];
+
+          domains[e]['site']['data']['temp'] = Math.round(
+            (domains[e]['site']['data']['temp'] + domains[idx]['site']['data']['temp']) / Math.max(1, n.length)
+          );
+          if(domains[e]['site']['data']['temp'] > 0 && nsites.indexOf(e) == -1)
+            nsites.push(e);
+
+
+        }
+      );
+      domains[idx]['site']['data']['temp'] = Math.round(domains[idx]['site']['data']['temp'] / Math.max(1, n.length));
+      if(domains[idx]['site']['data']['temp'] > 0 && nsites.indexOf(idx) == -1 )
+        nsites.push(idx);
+    }
+
+    sites = nsites;
+    step++;
+  }
+
+  while(sites.length > 0){
+    idx = sites.pop();
+    var n = domains[idx]['site']['data']['neighbors'].filter(
+      function(e){
+        return domains[e]['site']['data']['alt'] < domains[idx]['site']['data']['alt'];
+      }
+    ).sort(
+      function(a, b){
+        return domains[a]['site']['data']['alt'] - domains[b]['site']['data']['alt'];
+      }
+    );
+
+    n.forEach(
+      function(e){
+        var deltaAlt = Math.round((domains[idx]['site']['data']['alt'] - domains[e]['site']['data']['alt']) / 2.0);
+        oldAlt = domains[idx]['site']['data']['alt'];
+        domains[idx]['site']['data']['alt'] -= deltaAlt;
+        if(oldAlt < 0 && domains[idx]['site']['data']['alt'] >= 0)
+          surf += domains[idx]['site']['data']['area'];
+        if(oldAlt >= 0 && domains[idx]['site']['data']['alt'] < 0)
+          surf -= domains[idx]['site']['data']['area'];
+
+        oldAlt = domains[e]['site']['data']['alt'];
+        domains[e]['site']['data']['alt'] += deltaAlt;
+        if(oldAlt < 0 && domains[e]['site']['data']['alt'] >= 0)
+          surf += domains[e]['site']['data']['area'];
+        if(oldAlt >= 0 && domains[e]['site']['data']['alt'] < 0)
+          surf -= domains[e]['site']['data']['area'];
+
+        domains[e]['site']['data']['temp'] = Math.round(
+          (domains[e]['site']['data']['temp'] + domains[idx]['site']['data']['temp']) / Math.max(1, n.length)
+        );
+        // if(domains[e]['site']['data']['temp'] > 0  && sites.indexOf(e) == -1)
+        //   sites.push(e);
+      }
+    );
+    domains[idx]['site']['data']['temp'] = Math.round(domains[idx]['site']['data']['temp'] / Math.max(1, n.length));
+    // if(domains[idx]['site']['data']['temp'] > 0 )
+    //   sites.unshift(idx);
+  }
+
+  console.log(surf + ' ' + surfTarget);
+
+  var c;
+  for(i in domains){
+    if(pmaxAlt < domains[i]['site']['data']['alt']){
+      // console.log(i + ' ' + domains[i]['site']['data']['alt'] + ' ' + c);
+      // console.log('fill:' + c + ';');
+      pmaxAlt = domains[i]['site']['data']['alt'];
+      ipmaxAlt = i;
+    }
+
+    ldom = $('#dom' + i);
+    ldom.attr('data-altitude', Math.min(maxAlt, domains[i]['site']['data']['alt']));
+  }
+
+
+  var linearGradient = defs.append("linearGradient")
+    .attr("id", "sea-gradient");
+
+  linearGradient.selectAll("stop")
+    .data( seacolors.range() )
+    .enter().append("stop")
+    .attr("offset", function(d,i) { return i/(seacolors.range().length-1); })
+    .attr("stop-color", function(d) { return d; });
+
+  var linearGradient = defs.append("linearGradient")
+    .attr("id", "land-gradient");
+
+  linearGradient.selectAll("stop")
+    .data( landcolors.range() )
+    .enter().append("stop")
+    .attr("offset", function(d,i) { return i/(landcolors.range().length-1); })
+    .attr("stop-color", function(d) { return d; });
+
+  infos_grp.append("rect")
+    .attr("width", 150)
+    .attr("height", 20)
+    .style("fill", "url(#sea-gradient)");
+
+  infos_grp.append("rect")
+    .attr("width", 300)
+    .attr("height", 20)
+    .attr("x", 150)
+    .style("fill", "url(#land-gradient)");
+}
+
+function tideUp(){
+  refreshMap(6);
+}
+
+function tideDown(){
+  refreshMap(-6);
+}
+
+function tideNeutral(){
+  refreshMap(0);
+}
+
+var cycle = 0;
+var alts = [-6, 0, 0, 6, 0, 0];
+var tideInterval = null;
+function tideCycle(dt){
+  if(tideInterval)
+    window.clearInterval(tideInterval);
+  if(dt > 0)
+  tideInterval = window.setInterval(
+    function(){
+      // console.log('area('+alts[cycle] + ')=' + refreshMap(alts[cycle]));
+      refreshMap(alts[cycle]);
+      cycle = (cycle + 1) % alts.length;
+    },
+    dt
+  );
+}
+
+</script>
+</body>
+</html>

@@ -26,3 +26,6 @@ code{
   background-color: white;
   padding: 1rem;
 }
+
+img{ width: unset; }
+pre:has(code){ overflow-x: auto; background-color: white;}

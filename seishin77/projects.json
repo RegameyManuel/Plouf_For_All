@@ -5,7 +5,7 @@ var projects = [
   },
   {
     "codename": "realm", "ext":"png", "date":"2024-11-07",
-    "translations": {"en":"The realm : Goblin chess", "fr":"Le royaume : Jeu d'échecs gobelin"}
+    "translations": {"en":"CraftyJS : The realm, a Goblin chess", "fr":"CraftyJS : Le royaume, jeu d'échecs gobelin"}
   },
   {
     "codename": "curved_relations", "ext":"png", "date":"2024-11-08",
@@ -14,5 +14,9 @@ var projects = [
   {
     "codename": "cpp_ptr", "ext":"png", "date":"2024-11-08",
     "translations": {"en":"C++ : Pointers cheat sheet", "fr":"C++ : Aide-mémoire sur les pointeurs"}
+  },
+  {
+    "codename": "vormap", "ext":"png", "date":"2024-11-08",
+    "translations": {"en":"D3.js : Generating a world from Voronoi", "fr":"D3.js : Génération d'un monde selon Voronoi"}
   },
 ];
