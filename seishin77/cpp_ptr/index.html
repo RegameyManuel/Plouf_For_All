@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="../../assets/style/w3.css">
+  <link rel="stylesheet" href="../../assets/style/style.css">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <title>Seishin's homepage</title>
+</head>
+<body class="w3-theme w3-container w3-display-container">
+  <div class="w3-display-topright w3-padding w3-theme-d3 w3-border">
+    <img class="flag" onclick="changeLanguage('en');" src="../../assets/img/flags/en.svg" alt="english">
+    <img class="flag w3-hide" onclick="changeLanguage('es');" src="../../assets/img/flags/es.svg" alt="spanish">
+    <img class="flag" onclick="changeLanguage('fr');" src="../../assets/img/flags/fr.svg" alt="french">
+  </div>
+  <h1 lang="en">C++ : Pointers cheat sheet</h1>
+  <h1 lang="fr">C++ : Aide-mémoire sur les pointeurs</h1>
+  <a href="../index.html" class="w3-button w3-theme-d3 w3-margin-bottom">
+    <span lang="fr">Retour</span>
+    <span lang="en">Go back</span>
+    <span lang="es">Volver<!-- Verify translation --></span>
+  </a>
+  <div class="w3-bar w3-theme-d3" id="tabs_control">
+    <button class="w3-bar-item w3-button" onclick="openCode('simpleptr')">
+      <span lang="en">one-dimension ptr</span>
+      <span lang="fr">Pointeurs</span>
+    </button>
+    <button class="w3-bar-item w3-button" onclick="openCode('doubleptr')">
+      <span lang="en">two-dimensions ptr</span>
+      <span lang="fr">Pointeurs de Pointeurs</span>
+    </button>
+    <!-- <button class="w3-bar-item w3-button" onclick="openCode('tripleptr')">three-dimensions ptr</button> -->
+  </div>
+  <div class="code w3-theme-l3" id="simpleptr">
+    <pre><code>int *ptr = new int[3];</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:3
+
+        space:4
+        block:b:4
+            columns 3
+            c["0"]:1
+            d["0"]:1
+            e["0"]:1
+        end
+        ptr ----> c
+        style b fill:transparent
+    </pre>
+    <pre><code>int *iter = ptr;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["0"]:1
+            d["0"]:1
+            e["0"]:1
+        end
+        ptr --> c
+        iter --> c
+        style b fill:transparent
+    </pre>
+    <pre><code>*iter = 1;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["1"]:1
+            d["0"]:1
+            e["0"]:1
+        end
+        ptr --> c
+        iter --> c
+        style b fill:transparent
+    </pre>
+    <pre><code>iter++;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["1"]:1
+            d["0"]:1
+            e["0"]:1
+        end
+        ptr --> c
+        iter --> d
+        style b fill:transparent
+    </pre>
+    <pre><code>*iter = 2;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["1"]:1
+            d["2"]:1
+            e["0"]:1
+        end
+        ptr --> c
+        iter --> d
+        style b fill:transparent
+    </pre>
+    <pre><code>iter++;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["1"]:1
+            d["2"]:1
+            e["0"]:1
+        end
+        ptr --> c
+        iter --> e
+        style b fill:transparent
+    </pre>
+    <pre><code>iter = 3;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["1"]:1
+            d["2"]:1
+            e["3"]:1
+        end
+        ptr --> c
+        iter --> e
+        style b fill:transparent
+    </pre>
+    <pre><code>iter--;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["1"]:1
+            d["2"]:1
+            e["3"]:1
+        end
+        ptr --> c
+        iter --> d
+        style b fill:transparent
+    </pre>
+    <pre><code>*iter++;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["1"]:1
+            d["3"]:1
+            e["3"]:1
+        end
+        ptr --> c
+        iter --> d
+        style b fill:transparent
+    </pre>
+    <pre><code>iter--;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["1"]:1
+            d["3"]:1
+            e["3"]:1
+        end
+        ptr --> c
+        iter --> c
+        style b fill:transparent
+    </pre>
+    <pre><code>*iter += 5;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["6"]:1
+            d["3"]:1
+            e["3"]:1
+        end
+        ptr --> c
+        iter --> c
+        style b fill:transparent
+    </pre>
+    <pre><code>iter += 2;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["6"]:1
+            d["3"]:1
+            e["3"]:1
+        end
+        ptr --> c
+        iter --> e
+        style b fill:transparent
+    </pre>
+    <pre><code>*iter += 2;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        block:b:4
+            columns 3
+            c["6"]:1
+            d["3"]:1
+            e["5"]:1
+        end
+        ptr --> c
+        iter --> e
+        style b fill:transparent
+    </pre>
+    <pre><code>iter++;</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        c["6"]:1
+        d["3"]:1
+        e["5"]:1
+        f[" "]:1
+
+        ptr --> c
+        iter --> f
+        style f fill:transparent;stroke:none
+    </pre>
+    <pre><code>*iter = 4; <span style="color:red;">// ERROR</span></code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 4
+        ptr:1
+        space:2
+        iter:1
+        space:4
+        c["6"]:1
+        d["3"]:1
+        e["5"]:1
+        f[" "]:1
+
+        ptr --> c
+        iter -- "ERROR" --> f
+        style f fill:transparent;stroke:none
+    </pre>
+  </div>
+  <div class="code w3-theme-l3" id="doubleptr">
+    <pre><code>int **ptr2 = new int*[3];</code></pre>
+    <pre class="mermaid">
+      block-beta
+        columns 5
+        ptr2:1
+        space:3
+        type21["int **"]:1
+
+        space:5
+
+        c2[" "]:1
+        d2[" "]:1
+        e2[" "]:1
+        space:1
+        type22["int *"]:1
+
+        ptr2 ----> c2
+        style type21 fill:none;stroke:none
+        style type22 fill:none;stroke:none
+    </pre>
+    <pre><code>int **iter2 = ptr2;
+for(int i = 0; i < 3; i++){
+    // Declare a memory block of 4 integers
+    *iter2 = new int[4];
+    iter++;
+}</code></pre>
+    <pre class="mermaid">
+      ---
+      config:
+        layout: elk
+      ---
+      block-beta
+        columns 16
+        ptr2:1
+        space:2
+        iter2:1
+        space:12
+
+        space:16
+
+        c2[" "]:1
+        space:1
+        d2[" "]:1
+        space:1
+        e2[" "]:1
+        space:1
+        f2[" "]:1
+        space:9
+
+        space:16
+
+        g2[" "]:1
+        h2[" "]:1
+        i2[" "]:1
+        j2[" "]:1
+        space:1
+
+        k2[" "]:1
+        l2[" "]:1
+        m2[" "]:1
+        n2[" "]:1
+        space:1
+
+        o2[" "]:1
+        p2[" "]:1
+        q2[" "]:1
+        r2[" "]:1
+        space:1
+
+        ptr2 ----> c2
+        iter2 ----> f2
+        c2 ----> g2
+        d2 ----> k2
+        e2 ----> o2
+        style f2 fill:transparent;stroke:none
+    </pre>
+  </div>
+  <a href="../index.html" class="w3-button w3-theme-d3 w3-margin-bottom">
+    <span lang="fr">Retour</span>
+    <span lang="en">Go back</span>
+    <span lang="es">Volver<!-- Verify translation --></span>
+  </a>
+  <script type="text/javascript" src="../../assets/script/script.js"></script>
+  <script type="text/javascript" src="../assets/js/script.js"></script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+  <script type="text/javascript">
+    function openCode(n){
+      let i;
+      let x = document.getElementsByClassName("code");
+      let y = document.querySelectorAll("#tabs_control > button");
+      for(i = 0; i < x.length; i++){
+        if(x[i].getAttribute('id') == n){
+          x[i].style.display = "block";
+          y[i].classList += " w3-theme-l3";
+        }
+        else{
+          x[i].style.display = "none";
+          y[i].classList.remove("w3-theme-l3");
+        }
+      }
+      // document.getElementById(n).style.display = "block";
+    }
+    setTimeout(
+      function(){
+        openCode('simpleptr');
+      },
+      250
+    );
+  </script>
+</body>
+</html>

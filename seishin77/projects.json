@@ -11,4 +11,8 @@ var projects = [
     "codename": "curved_relations", "ext":"png", "date":"2024-11-08",
     "translations": {"en":"D3.js : Curved relations", "fr":"D3.js : schéma relationnel"}
   },
+  {
+    "codename": "cpp_ptr", "ext":"png", "date":"2024-11-08",
+    "translations": {"en":"C++ : Pointers cheat sheet", "fr":"C++ : Aide-mémoire sur les pointeurs"}
+  },
 ];
