@@ -21,7 +21,8 @@ function createSudokuBoard() {
     table.appendChild(tr);
   }
 
-  document.body.appendChild(table);
+  //document.body.appendChild(table);
+  document.getElementById('sudoku-container').appendChild(table);
 }
 
 function calculateRegion(line, column) {
