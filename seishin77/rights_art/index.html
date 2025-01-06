@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="../../assets/style/w3.css">
+  <link rel="stylesheet" href="../../assets/style/style.css">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <title>Seishin's homepage</title>
+</head>
+<body class="w3-theme w3-container w3-display-container">
+  <div class="w3-display-topright w3-padding w3-theme-d3 w3-border">
+    <img class="flag" onclick="changeLanguage('en');" src="../../assets/img/flags/en.svg" alt="english">
+    <img class="flag w3-hide" onclick="changeLanguage('es');" src="../../assets/img/flags/es.svg" alt="spanish">
+    <img class="flag" onclick="changeLanguage('fr');" src="../../assets/img/flags/fr.svg" alt="french">
+  </div>
+  <h1 lang="en">Rights management methods</h1>
+  <h1 lang="fr">Méthodes de gestion des droits</h1>
+  <a href="../index.html" class="w3-button w3-theme-d3 w3-margin-bottom">
+    <span lang="fr">Retour</span>
+    <span lang="en">Go back</span>
+    <span lang="es">Volver<!-- Verify translation --></span>
+  </a>
+  <div class="w3-bar w3-theme-d3 w3-margin-bottom" id="tabs_control">
+    <button class="w3-bar-item w3-button" onclick="openCode('page1')">
+      <span lang="en">Page 1</span>
+      <span lang="fr">Page 1</span>
+    </button>
+    <button class="w3-bar-item w3-button" onclick="openCode('page2')">
+      <span lang="en">Page 2</span>
+      <span lang="fr">Page 2</span>
+    </button>
+  </div>
+
+  <div class="code w3-theme-l3 w3-padding-lr" id="page1">
+    <h1>Introduction</h1>
+    <p>
+      Le contrôle d'accès fait partie du c&oelig;ur de tout système informatique multi-utilisateurs,
+      d'où l'importance de sa conception.
+      Il existe plusieurs philosophies pour gérer les droits que nous allons étudier.
+    </p>
+    <h1>Concepts</h1>
+    <p>
+      Le contrôle d'accès autorise ou non les actions entre différentes entités.
+    </p>
+  </div>
+
+
+  <div class="code w3-theme-l3" id="page2">
+    <h1></h1>
+  </div>
+
+  <a href="../index.html" class="w3-button w3-theme-d3 w3-margin-bottom w3-margin-top">
+    <span lang="fr">Retour</span>
+    <span lang="en">Go back</span>
+    <span lang="es">Volver<!-- Verify translation --></span>
+  </a>
+  <script type="text/javascript" src="../../assets/script/script.js"></script>
+  <script type="text/javascript" src="../assets/js/script.js"></script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+  <script type="text/javascript">
+    function openCode(n){
+      let i;
+      let x = document.getElementsByClassName("code");
+      let y = document.querySelectorAll("#tabs_control > button");
+      for(i = 0; i < x.length; i++){
+        if(x[i].getAttribute('id') == n){
+          x[i].style.display = "block";
+          y[i].classList += " w3-theme-l3";
+        }
+        else{
+          x[i].style.display = "none";
+          y[i].classList.remove("w3-theme-l3");
+        }
+      }
+      // document.getElementById(n).style.display = "block";
+    }
+    setTimeout(
+      function(){
+        openCode('page1');
+      },
+      100
+    );
+  </script>
+</body>
+</html>

@@ -19,4 +19,8 @@ var projects = [
     "codename": "vormap", "ext":"png", "date":"2024-11-08",
     "translations": {"en":"D3.js : Generating a world from Voronoi", "fr":"D3.js : Génération d'un monde selon Voronoi"}
   },
+  {
+    "codename": "rights_art", "ext":"webp", "date":"2025-01-06",
+    "translations": {"en":"Rights management methods", "fr":"Méthodes de gestion des droits"}
+  },
 ];
